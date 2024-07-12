@@ -158,6 +158,17 @@ export class NodeSerialPortAdapter extends EventTarget implements NodeSerialPort
         }
     }
 
+    setSignals(signals: Partial<{dataTerminalReady: boolean, requestToSend: boolean, break:boolean}>): Promise<void> {
+        return new Promise((resolve, reject) => {
+            if (!this.port_) throw new Error("Failed to execute 'setSignals' on 'SerialPort': The port is not open.");
+
+            this.port_.set({ dtr: signals.dataTerminalReady, rts: signals.requestToSend, brk: signals.break }, (err: Error | null) => {
+                if (err) reject(err);
+                else resolve();
+            });
+        });
+    }
+
     protected closePortEvent() {
         this.dispatchEvent(new Event("close"));
         // if (this.ondisconnect) this.ondisconnect(new Event("disconnect"));
@@ -165,7 +176,7 @@ export class NodeSerialPortAdapter extends EventTarget implements NodeSerialPort
 
     protected receiveDataEvent(stream: Buffer) {
         let controller = this.controllerQueue_.shift();
-        
+
         if (controller) {
             let data: Buffer = Buffer.concat([this.readBuffer_, stream]);
             let ab = data.buffer.slice(data.byteOffset, data.byteOffset + data.byteLength);
