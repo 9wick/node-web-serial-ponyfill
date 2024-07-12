@@ -1,5 +1,5 @@
 {
-  "name": "node-web-serial-ponyfill",
+  "name": "@9wick/node-web-serial-ponyfill",
   "version": "0.5.3",
   "description": "An implementation of the Serial API on top of the Node.js serialport package.",
   "main": "dist/node-web-serial-ponyfill.cjs.js",
