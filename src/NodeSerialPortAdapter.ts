@@ -139,6 +139,7 @@ export class NodeSerialPortAdapter extends EventTarget implements NodeSerialPort
 
             this.port_.close(() => {
                 this.port_ = undefined;
+                this.controllerQueue_ = [];
                 resolve();
             });
         });
